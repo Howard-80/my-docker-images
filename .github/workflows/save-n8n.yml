@@ -1,0 +1,17 @@
+name: Save n8n Image
+on: [workflow_dispatch] # 手动点击运行
+
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull and Save Image
+        run: |
+          docker pull n8nio/n8n:latest
+          docker save -o n8n.tar n8nio/n8n:latest
+          gzip n8n.tar # 压缩一下，减小体积
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: n8n-tar-file
+          path: n8n.tar.gz
